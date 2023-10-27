@@ -31,6 +31,28 @@ public class BuildingSystem : MonoBehaviour
             IntializeWithObject(ironMiner);
         
         }
+
+
+
+        if (!objectToPlace)
+        {
+            return;
+        }
+
+        if(Input.GetKey(KeyCode.Space)) 
+        {
+            if(CanBePlaced(objectToPlace))
+            {
+                objectToPlace.Place();
+                Vector3Int start = gridLayout.WorldToCell(objectToPlace.GetStartPositon());
+                TakeArea(start, objectToPlace.Size);
+            }
+            else
+            {
+                Destroy(objectToPlace.gameObject);
+            }
+
+        }
     }
 
 
@@ -59,6 +81,22 @@ public class BuildingSystem : MonoBehaviour
         return position;
     }
 
+
+    private static TileBase[] GetTilesBlock(BoundsInt area, Tilemap tilemap)
+    {
+        TileBase[] array = new TileBase[area.size.x * area.size.y * area.size.z];
+        int counter = 0;
+
+        foreach(var v in area.allPositionsWithin)
+        {
+            Vector3Int pos = new Vector3Int(v.x, v.y, 0);
+            array[counter] = tilemap.GetTile(pos);
+            counter++;
+        }
+        return array;
+    }
+
+
     #endregion
 
     #region Building Placement
@@ -72,6 +110,28 @@ public class BuildingSystem : MonoBehaviour
         obj.AddComponent<ObjectDrag>();
     }
     
+    private bool CanBePlaced(PlaceableObject placeableObject)
+    {
+        BoundsInt area = new BoundsInt();
+        area.position = gridLayout.WorldToCell(objectToPlace.GetStartPositon());
+        area.size = placeableObject.Size;
+
+        TileBase[] baseArray = GetTilesBlock(area, tilemap);
+
+        foreach(var b in baseArray)
+        {
+            if(b == tileBase)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void TakeArea(Vector3Int start, Vector3Int size)
+    {
+        tilemap.BoxFill(start, tileBase,start.x, start.y, start.x+start.x, start.y+start.y);
+    }
         
     
 
