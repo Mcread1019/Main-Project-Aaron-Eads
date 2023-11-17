@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class StatCon : MonoBehaviour
 {
-    public static int Energy = 0;
+    public static int Energy = 100;
     public static int iron_ore = 0;
     public static int iron = 0;
+    public static int Money = 5000;
+    public static int coal = 0;
 
 
     // Update is called once per frame
