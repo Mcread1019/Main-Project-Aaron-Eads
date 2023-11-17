@@ -14,6 +14,9 @@ public class BuildingSystem : MonoBehaviour
     [SerializeField] private TileBase tileBase;
 
     public GameObject ironMiner;
+    public GameObject coalMiner;
+    public GameObject ironRefiner;
+    public GameObject Power;
 
     private PlaceableObject objectToPlace;
 
@@ -28,9 +31,23 @@ public class BuildingSystem : MonoBehaviour
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.Q)) {
+            
             IntializeWithObject(ironMiner);
         
         }
+        if(Input.GetKeyDown(KeyCode.W)) {
+            IntializeWithObject(coalMiner);
+
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            IntializeWithObject(ironRefiner);
+        }
+        if(Input.GetKeyDown (KeyCode.R))
+        {
+            IntializeWithObject(Power);
+        }
+
 
 
 
